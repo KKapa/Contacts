@@ -15,6 +15,7 @@
 		E97807532795D149005C30C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E97807512795D149005C30C8 /* LaunchScreen.storyboard */; };
 		E978075B2795D188005C30C8 /* mainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E978075A2795D188005C30C8 /* mainTableViewController.swift */; };
 		E978075D2795D69C005C30C8 /* ScondTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E978075C2795D69C005C30C8 /* ScondTableViewController.swift */; };
+		E9FFEE342798AFE800E70685 /* UserContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FFEE332798AFE800E70685 /* UserContact.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		E97807542795D149005C30C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E978075A2795D188005C30C8 /* mainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainTableViewController.swift; sourceTree = "<group>"; };
 		E978075C2795D69C005C30C8 /* ScondTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScondTableViewController.swift; sourceTree = "<group>"; };
+		E9FFEE332798AFE800E70685 /* UserContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContact.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				E97807432795D147005C30C8 /* AppDelegate.swift */,
 				E97807452795D147005C30C8 /* SceneDelegate.swift */,
 				E97807492795D147005C30C8 /* Main.storyboard */,
+				E9FFEE332798AFE800E70685 /* UserContact.swift */,
 				E978074F2795D149005C30C8 /* Assets.xcassets */,
 				E97807512795D149005C30C8 /* LaunchScreen.storyboard */,
 				E97807542795D149005C30C8 /* Info.plist */,
@@ -147,6 +150,7 @@
 				E978075D2795D69C005C30C8 /* ScondTableViewController.swift in Sources */,
 				E978075B2795D188005C30C8 /* mainTableViewController.swift in Sources */,
 				E978074E2795D147005C30C8 /* AppContacts.xcdatamodeld in Sources */,
+				E9FFEE342798AFE800E70685 /* UserContact.swift in Sources */,
 				E97807442795D147005C30C8 /* AppDelegate.swift in Sources */,
 				E97807462795D147005C30C8 /* SceneDelegate.swift in Sources */,
 			);
