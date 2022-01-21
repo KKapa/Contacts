@@ -9,7 +9,7 @@ import UIKit
 
 class mainTableViewController: UITableViewController {
     
-    let myContacts = ["Andrey", "Pavel", "Oleg", "Alexey", "Michail", "Serhey"]
+    let myContacts = ["Andrey", "Pavel", "Oleg", "Alexey", "Michail", "Serhey", "Dmitriy"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +31,9 @@ class mainTableViewController: UITableViewController {
 
   
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "formain", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "formain", for: indexPath) as! MainTableViewCell
 
-        
+        cell.nameLabel.text = myContacts[indexPath.row]
 
         return cell
     }

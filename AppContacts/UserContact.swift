@@ -6,7 +6,13 @@
 //
 
 import Foundation
+import MapKit
 
 struct UserContact {
     var name: String
+    var phoneNumber: String
+    var imagePhoto: UIImage?
+    var notes: String?
+    var address: CLLocationCoordinate2D?
+
 }
