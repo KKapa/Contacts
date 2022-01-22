@@ -6,21 +6,61 @@
 //
 
 import UIKit
+import CoreData
 
-class mainTableViewController: UITableViewController {
+class MainTableViewController: UITableViewController {
     
-    let myContacts = ["Andrey", "Pavel", "Oleg", "Alexey", "Michail", "Serhey", "Dmitriy"]
+    var Contacts: [Contact] = []
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+              let context = appDelegate.persistentContainer.viewContext
+              
+              let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
+              
+              do {
+                  Contacts = try context.fetch(fetchRequest)
+              } catch let error as NSError {
+                  print(error.localizedDescription)
+              }
 
-       
+    }
+    
+   
+    
+    func createContact(withTitle name: String) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        guard let entity = NSEntityDescription.entity(forEntityName: "Contact", in: context) else {return}
+        let contactObject = Contact(entity: entity, insertInto: context)
+        
+        do {
+            try context.save()
+            Contacts.append(contactObject)
+            contactObject.name = name
+            
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
     }
     
     @IBAction func goBack(segue: UIStoryboardSegue) {
+        guard segue.identifier == "savecontact", let svc = segue.source as? ScondTableViewController else {return}
+        var name = svc.nameTF.text
+        createContact(withTitle: name!)
+        self.tableView.reloadData()
+        print("666")
         
     }
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+      
+       
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -28,14 +68,14 @@ class mainTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return myContacts.count
+        return Contacts.count
     }
 
   
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "formain", for: indexPath) as! MainTableViewCell
 
-        cell.nameLabel.text = myContacts[indexPath.row]
+        cell.nameLabel.text = Contacts[indexPath.row].name
 
         return cell
     }

@@ -7,15 +7,23 @@
 
 import UIKit
 
+
 class ScondTableViewController: UITableViewController {
     @IBOutlet weak var imagePicked: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var nameTF: UITextField!
+    @IBOutlet weak var numberLabel: UILabel!
+    @IBOutlet weak var numberTF: UITextField!
+    @IBOutlet weak var notesLabel: UILabel!
+    @IBOutlet weak var notesTF: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
 
     @IBAction func saveContact(_ sender: Any) {
+        performSegue(withIdentifier: "savecontact", sender: nil)
     }
     
     @IBAction func cancelEnterContact(_ sender: Any) {

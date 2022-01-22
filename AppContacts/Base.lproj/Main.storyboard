@@ -10,7 +10,7 @@
         <!--MyContacts-->
         <scene sceneID="vhE-cL-2dA">
             <objects>
-                <tableViewController id="XYA-Nh-Dtb" customClass="mainTableViewController" customModule="AppContacts" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="XYA-Nh-Dtb" customClass="MainTableViewController" customModule="AppContacts" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="8x4-sS-suC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -223,7 +223,6 @@
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="roJ-5X-FUo">
                             <connections>
                                 <action selector="cancelEnterContact:" destination="vqZ-IR-5T6" id="3Y9-zK-glb"/>
-                                <segue destination="ufr-An-b5y" kind="unwind" unwindAction="goBackWithSegue:" id="QJ2-5M-9WT"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="znm-Mc-qy6">
@@ -234,6 +233,13 @@
                     </navigationItem>
                     <connections>
                         <outlet property="imagePicked" destination="mdI-Xz-sa2" id="qgd-vR-hF9"/>
+                        <outlet property="nameLabel" destination="CtB-2N-MWQ" id="PCM-Di-mO5"/>
+                        <outlet property="nameTF" destination="euu-VO-09D" id="Ng5-9J-cTF"/>
+                        <outlet property="notesLabel" destination="76n-el-Jv9" id="gGO-r4-ugW"/>
+                        <outlet property="notesTF" destination="2CQ-NX-Koa" id="0xh-fc-dwf"/>
+                        <outlet property="numberLabel" destination="cvl-FK-Ziq" id="Ahi-1R-gjy"/>
+                        <outlet property="numberTF" destination="8oA-cH-7La" id="t5a-nH-4eW"/>
+                        <segue destination="ufr-An-b5y" kind="unwind" identifier="savecontact" unwindAction="goBackWithSegue:" id="RS3-qA-Hf5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aiy-N9-Lgd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -280,7 +286,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="3V4-2J-wVJ"/>
+        <segue reference="Lft-uB-HTj"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
