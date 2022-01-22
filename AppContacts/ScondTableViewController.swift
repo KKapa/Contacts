@@ -15,6 +15,12 @@ class ScondTableViewController: UITableViewController {
 
     }
 
+    @IBAction func saveContact(_ sender: Any) {
+    }
+    
+    @IBAction func cancelEnterContact(_ sender: Any) {
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
