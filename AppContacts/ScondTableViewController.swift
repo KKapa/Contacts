@@ -77,3 +77,10 @@ extension ScondTableViewController: UIImagePickerControllerDelegate,  UINavigati
         
     }
 }
+
+extension ScondTableViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
