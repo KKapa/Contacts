@@ -8,7 +8,7 @@
 import UIKit
 
 
-class ScondTableViewController: UITableViewController {
+class AddContactTableViewController: UITableViewController {
     @IBOutlet weak var imagePicked: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var nameTF: UITextField!
@@ -56,7 +56,7 @@ class ScondTableViewController: UITableViewController {
     }
 }
 
-extension ScondTableViewController: UIImagePickerControllerDelegate,  UINavigationControllerDelegate {
+extension AddContactTableViewController: UIImagePickerControllerDelegate,  UINavigationControllerDelegate {
     
     func chooseImagePicker(source: UIImagePickerController.SourceType) {
         
@@ -78,7 +78,7 @@ extension ScondTableViewController: UIImagePickerControllerDelegate,  UINavigati
     }
 }
 
-extension ScondTableViewController: UITextFieldDelegate {
+extension AddContactTableViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

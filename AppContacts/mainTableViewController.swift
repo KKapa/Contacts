@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class MainTableViewController: UITableViewController {
+class MyContactsListTableViewController: UITableViewController {
     
     var Contacts: [Contact] = []
 
@@ -48,7 +48,7 @@ class MainTableViewController: UITableViewController {
     }
     
     @IBAction func goBack(segue: UIStoryboardSegue) {
-        guard segue.identifier == "savecontact", let svc = segue.source as? ScondTableViewController else {return}
+        guard segue.identifier == "savecontact", let svc = segue.source as? AddContactTableViewController else {return}
         var name = svc.nameTF.text
         createContact(withTitle: name!)
         self.tableView.reloadData()
