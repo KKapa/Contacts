@@ -17,9 +17,11 @@ class AddContactTableViewController: UITableViewController {
     @IBOutlet weak var notesLabel: UILabel!
     @IBOutlet weak var notesTF: UITextField!
     
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        saveButton.isEnabled = false
+        nameTF.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
     }
 
     @IBAction func saveContact(_ sender: Any) {
@@ -27,6 +29,7 @@ class AddContactTableViewController: UITableViewController {
     }
     
     @IBAction func cancelEnterContact(_ sender: Any) {
+        dismiss(animated: true)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -82,5 +85,13 @@ extension AddContactTableViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    @objc private func textFieldChanged() {
+        if nameTF.text?.isEmpty == false {
+            saveButton.isEnabled = true
+        } else {
+            saveButton.isEnabled = false
+        }
     }
 }

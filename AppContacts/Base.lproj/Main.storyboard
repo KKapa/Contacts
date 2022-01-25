@@ -85,7 +85,7 @@
             </objects>
             <point key="canvasLocation" x="850.72463768115949" y="84.375"/>
         </scene>
-        <!--Add Contact Table View Controller-->
+        <!--New Contact-->
         <scene sceneID="kWj-4i-sND">
             <objects>
                 <tableViewController id="vqZ-IR-5T6" customClass="AddContactTableViewController" customModule="AppContacts" customModuleProvider="target" sceneMemberID="viewController">
@@ -228,10 +228,11 @@
                             <outlet property="delegate" destination="vqZ-IR-5T6" id="UPA-hV-7Xr"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="QYi-Od-pPR">
+                    <navigationItem key="navigationItem" title="New Contact" id="QYi-Od-pPR">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="roJ-5X-FUo">
                             <connections>
                                 <action selector="cancelEnterContact:" destination="vqZ-IR-5T6" id="3Y9-zK-glb"/>
+                                <segue destination="ufr-An-b5y" kind="unwind" unwindAction="goBackWithSegue:" id="LTW-6P-Df2"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="znm-Mc-qy6">
@@ -248,6 +249,7 @@
                         <outlet property="notesTF" destination="2CQ-NX-Koa" id="0xh-fc-dwf"/>
                         <outlet property="numberLabel" destination="cvl-FK-Ziq" id="Ahi-1R-gjy"/>
                         <outlet property="numberTF" destination="8oA-cH-7La" id="t5a-nH-4eW"/>
+                        <outlet property="saveButton" destination="znm-Mc-qy6" id="VyU-Hl-28A"/>
                         <segue destination="ufr-An-b5y" kind="unwind" identifier="savecontact" unwindAction="goBackWithSegue:" id="RS3-qA-Hf5"/>
                     </connections>
                 </tableViewController>
