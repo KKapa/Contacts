@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class AddContactTableViewController: UITableViewController {
     @IBOutlet weak var imagePicked: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -21,6 +20,9 @@ class AddContactTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         saveButton.isEnabled = false
+        imagePicked.contentMode = .scaleAspectFit
+        imagePicked.clipsToBounds = true
+
         nameTF.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
     }
 
@@ -33,65 +35,79 @@ class AddContactTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if indexPath.row == 0 {
-            
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            
-            let photo = UIAlertAction(title: "Photo", style: .default) { _ in
-                self.chooseImagePicker(source: .photoLibrary)
+        view.endEditing(true)
+
+        let isSelectPickerField = indexPath.row == 0
+        if isSelectPickerField {
+            askPickerSource { [weak self] selectedSource in
+                selectedSource.flatMap { self?.chooseImagePicker(source: $0) }
             }
-            
-            let camera = UIAlertAction(title: "Camera", style: .default) { _ in
-                self.chooseImagePicker(source: .camera)
-            }
-            
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel)
-            
-            alertController.addAction(camera)
-            alertController.addAction(photo)
-            alertController.addAction(cancel)
-            
-            present(alertController, animated: true)
-        } else {
-            view.endEditing(true)
+            return
         }
+    }
+
+    private func askPickerSource(callback: @escaping (UIImagePickerController.SourceType?) -> Void) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let photo = UIAlertAction(title: "Photo", style: .default) { _ in
+            callback(.photoLibrary)
+        }
+        let camera = UIAlertAction(title: "Camera", style: .default) { _ in
+            callback(.camera)
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            callback(nil)
+        }
+
+        alertController.addActions([camera, photo, cancel])
+        present(alertController, animated: true)
+    }
+
+    private func notifySourceNotSupported() {
+        let alertController = UIAlertController(
+            title: "Oops",
+            message: "Selected source is not supported",
+            preferredStyle: .alert
+        )
+        alertController.addAction(.init(title: "OK", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension UIAlertController {
+    func addActions(_ actions: [UIAlertAction]) {
+        actions.forEach { addAction($0) }
     }
 }
 
 extension AddContactTableViewController: UIImagePickerControllerDelegate,  UINavigationControllerDelegate {
-    
     func chooseImagePicker(source: UIImagePickerController.SourceType) {
-        
-        if UIImagePickerController.isSourceTypeAvailable(source) {
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            imagePicker.allowsEditing = true
-            imagePicker.sourceType = source
-            present(imagePicker, animated: true)
+        guard UIImagePickerController.isSourceTypeAvailable(source) else {
+            notifySourceNotSupported()
+            return
         }
+
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = source
+
+        present(imagePicker, animated: true)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         imagePicked.image = info[.editedImage] as? UIImage
-        imagePicked.contentMode = .scaleAspectFit
-        imagePicked.clipsToBounds = true
-        dismiss(animated: true)
-        
+        picker.dismiss(animated: true)
     }
 }
 
 extension AddContactTableViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+        return textField.resignFirstResponder()
     }
     
     @objc private func textFieldChanged() {
-        if nameTF.text?.isEmpty == false {
-            saveButton.isEnabled = true
-        } else {
-            saveButton.isEnabled = false
-        }
+        let hasText = nameTF.text?.isEmpty == false
+        saveButton.isEnabled = hasText
     }
 }
