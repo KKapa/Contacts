@@ -90,7 +90,10 @@ class MyContactsListTableViewController: UITableViewController {
 
         cell.nameLabel.text = Contacts[indexPath.row].name
         cell.phoneLabel.text = Contacts[indexPath.row].phoneNumber
-        cell.miniPhoto.image = Contacts[indexPath.row].imagePhoto as! UIImage?
+        let imageData = Contacts[indexPath.row].imagePhoto
+        let photo = imageData.flatMap { UIImage(data: $0) }
+
+        cell.miniPhoto.image = photo
         
 //        cell.miniPhoto.contentMode = .scaleAspectFill
 //        cell.miniPhoto.clipsToBounds = true
