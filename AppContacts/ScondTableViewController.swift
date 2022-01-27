@@ -9,6 +9,7 @@ import UIKit
 
 
 class AddContactTableViewController: UITableViewController {
+    
     @IBOutlet weak var imagePicked: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var nameTF: UITextField!

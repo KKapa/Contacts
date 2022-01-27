@@ -16,7 +16,6 @@ class MyContactsListTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
               let context = appDelegate.persistentContainer.viewContext
-              
               let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
               let sortDescritor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescritor]
@@ -63,7 +62,7 @@ class MyContactsListTableViewController: UITableViewController {
 //        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 //        let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
 //        if let objects = try? context.fetch(fetchRequest) {
-//            for task in objects {9
+//            for task in objects {
 //                context.delete(task)
 //            }
 //        }
@@ -90,12 +89,11 @@ class MyContactsListTableViewController: UITableViewController {
 
         cell.nameLabel.text = Contacts[indexPath.row].name
         cell.phoneLabel.text = Contacts[indexPath.row].phoneNumber
-        cell.miniPhoto.image = Contacts[indexPath.row].imagePhoto as! UIImage?
         
-//        cell.miniPhoto.contentMode = .scaleAspectFill
-//        cell.miniPhoto.clipsToBounds = true
-//
-        
+        let dataPhoto = Contacts[indexPath.row].imagePhoto
+        let photo = UIImage(data: dataPhoto!)
+        cell.miniPhoto.image = photo
+
         return cell
     }
 }
