@@ -59,20 +59,20 @@ class MyContactsListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//        let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
-//        if let objects = try? context.fetch(fetchRequest) {
-//            for task in objects {
-//                context.delete(task)
-//            }
-//        }
-//
-//        do {
-//            try context.save()
-//
-//        } catch let error as NSError {
-//            print(error.localizedDescription)
-//        }
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
+        if let objects = try? context.fetch(fetchRequest) {
+            for task in objects {
+                context.delete(task)
+            }
+        }
+
+        do {
+            try context.save()
+
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -90,9 +90,10 @@ class MyContactsListTableViewController: UITableViewController {
         cell.nameLabel.text = Contacts[indexPath.row].name
         cell.phoneLabel.text = Contacts[indexPath.row].phoneNumber
         
-        let dataPhoto = Contacts[indexPath.row].imagePhoto
-        let photo = UIImage(data: dataPhoto!)
+        if let dataPhoto = Contacts[indexPath.row].imagePhoto {
+        let photo = UIImage(data: dataPhoto)
         cell.miniPhoto.image = photo
+        }
 
         return cell
     }
