@@ -9,56 +9,69 @@ import UIKit
 import CoreData
 
 class MyContactsListTableViewController: UITableViewController {
-    
-    var Contacts: [Contact] = []
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-              let context = appDelegate.persistentContainer.viewContext
-              let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
-              let sortDescritor = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescritor]
-              do {
-                  Contacts = try context.fetch(fetchRequest)
-              } catch let error as NSError {
-                  print(error.localizedDescription)
-              }
-    }
-    
-    func createContact(withTitle name: String, number: String, imagePhoto: Data) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
-        guard let entity = NSEntityDescription.entity(forEntityName: "Contact", in: context) else {return}
-        let contactObject = Contact(entity: entity, insertInto: context)
-        
-        do {
-            try context.save()
-            Contacts.append(contactObject)
-            contactObject.name = name
-            contactObject.phoneNumber = number
-            contactObject.imagePhoto = imagePhoto
-        } catch let error as NSError {
-            print(error.localizedDescription)
+    var contacts: [Contact] = [] {
+        didSet {
+            tableView.reloadData()
         }
     }
-    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        loadContactsFromDatabase()
+    }
+
     @IBAction func goBack(segue: UIStoryboardSegue) {
-        guard segue.identifier == "savecontact", let svc = segue.source as? AddContactTableViewController else {return}
-        let name = svc.nameTF.text
+        guard segue.identifier == "savecontact",
+              let svc = segue.source as? AddContactTableViewController,
+              let name = svc.nameTF.text else {
+            return
+        }
+
         let number = svc.numberTF.text
         let miniPhoto = svc.imagePicked.image
         let pngPhoto = miniPhoto?.pngData()
         
-        createContact(withTitle: name!, number: number!, imagePhoto: pngPhoto!)
-        self.tableView.reloadData()
-        print("666")
+        createContact(withTitle: name, number: number, imagePhoto: pngPhoto)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+
+    private func createContact(withTitle name: String, number: String?, imagePhoto: Data?) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            fatalError("No app delegate here")
+        }
+
+        let context = appDelegate.persistentContainer.viewContext
+        guard let entity = NSEntityDescription.entity(forEntityName: "Contact", in: context) else {
+            return
+        }
+
+        let contactObject = Contact(entity: entity, insertInto: context)
+        contactObject.name = name
+        contactObject.phoneNumber = number
+        contactObject.imagePhoto = imagePhoto
+        contacts.append(contactObject)
+
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+
+    private func loadContactsFromDatabase() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
+        let sortDescritor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescritor]
+
+        do {
+            contacts = try context.fetch(fetchRequest)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+
+    private func cleanDatabase() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
         if let objects = try? context.fetch(fetchRequest) {
@@ -69,11 +82,13 @@ class MyContactsListTableViewController: UITableViewController {
 
         do {
             try context.save()
-
         } catch let error as NSError {
             print(error.localizedDescription)
         }
     }
+
+    // MARK: Table view data source:
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -81,16 +96,16 @@ class MyContactsListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return Contacts.count
+        return contacts.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "formain", for: indexPath) as! MainTableViewCell
 
-        cell.nameLabel.text = Contacts[indexPath.row].name
-        cell.phoneLabel.text = Contacts[indexPath.row].phoneNumber
+        cell.nameLabel.text = contacts[indexPath.row].name
+        cell.phoneLabel.text = contacts[indexPath.row].phoneNumber
         
-        if let dataPhoto = Contacts[indexPath.row].imagePhoto {
+        if let dataPhoto = contacts[indexPath.row].imagePhoto {
         let photo = UIImage(data: dataPhoto)
         cell.miniPhoto.image = photo
         }
