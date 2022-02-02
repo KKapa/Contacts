@@ -15,4 +15,7 @@ struct UserContact {
     var notes: String?
     var address: CLLocationCoordinate2D?
 
+
 }
+
+
