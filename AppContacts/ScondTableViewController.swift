@@ -22,7 +22,9 @@ class AddContactTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         saveButton.isEnabled = false
-        nameTF.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        nameTF.addTarget(self,
+                         action: #selector(textFieldChanged),
+                         for: .editingChanged)
     }
 
     @IBAction func saveContact(_ sender: Any) {
@@ -37,7 +39,9 @@ class AddContactTableViewController: UITableViewController {
         
         if indexPath.row == 0 {
             
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let alertController = UIAlertController(title: nil,
+                                                    message: nil,
+                                                    preferredStyle: .actionSheet)
             
             let photo = UIAlertAction(title: "Photo", style: .default) { _ in
                 self.chooseImagePicker(source: .photoLibrary)
@@ -73,7 +77,8 @@ extension AddContactTableViewController: UIImagePickerControllerDelegate,  UINav
         }
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         imagePicked.image = info[.editedImage] as? UIImage
         imagePicked.contentMode = .scaleAspectFit
         imagePicked.clipsToBounds = true
@@ -84,8 +89,7 @@ extension AddContactTableViewController: UIImagePickerControllerDelegate,  UINav
 
 extension AddContactTableViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+        return textField.resignFirstResponder()
     }
     
     @objc private func textFieldChanged() {
