@@ -10,7 +10,6 @@ import UIKit
 class EditVIewController: UIViewController {
     
     @IBOutlet weak var imagePicked: UIImageView!
-    @IBOutlet weak var scrolView: UIScrollView!
     @IBOutlet weak var numberTF: UITextField!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var numberLabel: UILabel!
@@ -50,12 +49,13 @@ class EditVIewController: UIViewController {
     
     @objc private func keyboardWillShow(notification: Notification) {
         let userInfo = notification.userInfo
-        let keyboardHeight = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        scrolView.contentSize.height = scrolView.contentSize.height + keyboardHeight.height
-    }
+        let keyboardHeight = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.height
+        self.view.frame.origin.y -= keyboardHeight
+ }
     
     @objc private func keyboardWillHide(notification: Notification) {
-        scrolView.contentOffset = CGPoint.zero
+        self.view.frame.origin.y = 0
+
     }
     
     
