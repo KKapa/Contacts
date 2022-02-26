@@ -15,8 +15,10 @@ class EditVIewController: UIViewController {
     @IBOutlet weak var numberLabel: UILabel!
     @IBOutlet weak var nameTF: UITextField!
     
+    
     var nameTextField: String?
     var numberTextField: String?
+    var indexEditingRow: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,11 +31,10 @@ class EditVIewController: UIViewController {
         performSegue(withIdentifier: "fromEditTomain", sender: nil)
     }
     
-    @IBAction func saveEdit(_ sender: Any) {
-        let name = nameTF.text
-        let number = numberTF.text
-    
+    @IBAction func saveEditContact(_ sender: Any) {
+        performSegue(withIdentifier: "editChanges", sender: nil)
     }
+    
     
     func registerForKeyboardNotifications() {
     NotificationCenter.default.addObserver(self,
