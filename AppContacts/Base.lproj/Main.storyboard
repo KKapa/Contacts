@@ -354,7 +354,8 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="6p4-ti-psB">
                             <connections>
-                                <action selector="saveEdit:" destination="QSc-Cl-gNx" id="UzD-4b-f6k"/>
+                                <action selector="saveEditContact:" destination="QSc-Cl-gNx" id="TMu-A8-69G"/>
+                                <segue destination="QFy-1e-GgN" kind="unwind" identifier="editChanges" unwindAction="goToMainFromEditVCWithSegue:" id="lgI-MU-Jsc"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

@@ -11,26 +11,46 @@ import CoreData
 class MyContactsListTableViewController: UITableViewController {
     
     var contacts: [Contact] = []
+    var modelContactsList = UserContact.contactsList {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
     
+    func createModelContact(name: String, number: String, imagePhoto: UIImage) {
+        modelContactsList.append(UserContact(name: name, phoneNumber: number, imagePhoto: imagePhoto, notes: nil, address: nil))
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
-        let sortDescritor = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescritor]
+//        let sortDescritor = NSSortDescriptor(key: "name", ascending: true)
+//        fetchRequest.sortDescriptors = [sortDescritor]
         do {
             contacts = try context.fetch(fetchRequest)
         } catch let error as NSError {
             print(error.localizedDescription)
         }
+        
+        for contact in contacts {  //наверное это тоже нужно оборачивать в метод
+            let name = contact.name
+            let number = contact.phoneNumber
+            let dataImage = contact.imagePhoto
+            let image = UIImage(data: dataImage!)
+            
+            modelContactsList.append(UserContact(name: name!, phoneNumber: number, imagePhoto: image, notes: nil, address: nil))
+        }
+        
+
     }
     
+   
     func createContact(withTitle name: String, number: String, imagePhoto: Data) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
-        guard let entity = NSEntityDescription.entity(forEntityName: "Contact", in: context) else {return}
+        guard let entity = NSEntityDescription.entity(forEntityName: "Contact", in: context) else { return }
         let contactObject = Contact(entity: entity, insertInto: context)
         contactObject.name = name
         contactObject.phoneNumber = number
@@ -45,38 +65,32 @@ class MyContactsListTableViewController: UITableViewController {
     }
     
     
-    @IBAction func goToMainFromEditVC(segue: UIStoryboardSegue) {
-        
-    }
     
-    @IBAction func goBack(segue: UIStoryboardSegue) {
-        guard segue.identifier == "savecontact", let svc = segue.source as? AddContactTableViewController else {return}
-        let name = svc.nameTF.text
-        let number = svc.numberTF.text
-        let miniPhoto = svc.imagePicked.image
-        let pngPhoto = miniPhoto?.pngData()
-        
-        createContact(withTitle: name!, number: number!, imagePhoto: pngPhoto!)
-        self.tableView.reloadData()
-    }
+    
+    
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        //        let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
-        //        if let objects = try? context.fetch(fetchRequest) {
-        //            for task in objects {
-        //                context.delete(task)
-        //            }
-        //        }
-        //
-        //        do {
-        //            try context.save()
-        //
-        //        } catch let error as NSError {
-        //            print(error.localizedDescription)
-        //        }
+//
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
+
+//                let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//                let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
+//                if let objects = try? context.fetch(fetchRequest) {
+//                    for task in objects {
+//                        context.delete(task)
+//                    }
+//                }
+//
+//                do {
+//                    try context.save()
+//
+//                } catch let error as NSError {
+//                    print(error.localizedDescription)
+//                }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -91,29 +105,74 @@ class MyContactsListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "formain", for: indexPath) as! MainTableViewCell
         
-        cell.nameLabel.text = contacts[indexPath.row].name
-        cell.phoneLabel.text = contacts[indexPath.row].phoneNumber
+        cell.nameLabel.text = modelContactsList[indexPath.row].name
+        cell.phoneLabel.text = modelContactsList[indexPath.row].phoneNumber
+        cell.miniPhoto.image = modelContactsList[indexPath.row].imagePhoto
         
-        if let dataPhoto = contacts[indexPath.row].imagePhoto {
-            let photo = UIImage(data: dataPhoto)
-            cell.miniPhoto.image = photo
-        }
         
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .delete
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            modelContactsList.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    
+    func getContext() -> NSManagedObjectContext  {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return  appDelegate.persistentContainer.viewContext
+    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == "edit" else {return}
-        guard let evc = segue.destination as? EditVIewController  else {return}
+        guard segue.identifier == "edit" else { return }
+        guard let evc = segue.destination as? EditVIewController  else { return }
         if let indexPath = tableView.indexPathForSelectedRow?.row {
-            evc.nameTextField = contacts[indexPath].name
-            evc.numberTextField = contacts[indexPath].phoneNumber
+            evc.nameTextField = modelContactsList[indexPath].name
+            evc.numberTextField = modelContactsList[indexPath].phoneNumber
+            evc.indexEditingRow = indexPath
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "edit", sender: nil)
         
+    }
+    
+    @IBAction func goBack(segue: UIStoryboardSegue) {
+        guard segue.identifier == "savecontact", let svc = segue.source as? AddContactTableViewController else { return }
+        let name = svc.nameTF.text
+        let number = svc.numberTF.text
+        let miniPhoto = svc.imagePicked.image
+        let pngPhoto = miniPhoto?.pngData()
+        
+        createModelContact(name: name!, number: number!, imagePhoto: miniPhoto!)
+        self.tableView.reloadData()
+        createContact(withTitle: name!, number: number!, imagePhoto: pngPhoto!)
+    }
+    
+    @IBAction func goToMainFromEditVC(segue: UIStoryboardSegue) {
+        guard segue.identifier == "editChanges", let mvc = segue.source as? EditVIewController else { return }
+        
+        modelContactsList[mvc.indexEditingRow!].name = mvc.nameTF.text!
+        modelContactsList[mvc.indexEditingRow!].phoneNumber = mvc.numberTF.text
+        
+        
+        contacts[mvc.indexEditingRow!].name = mvc.nameTF.text
+        contacts[mvc.indexEditingRow!].phoneNumber = mvc.numberTF.text
+        let context = getContext()
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
     }
 }
