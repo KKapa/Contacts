@@ -77,12 +77,13 @@
                     <navigationItem key="navigationItem" title="MyContacts" id="HjU-5G-tum">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Fho-3C-NXJ">
                             <connections>
-                                <segue destination="vqZ-IR-5T6" kind="show" id="3V4-2J-wVJ"/>
+                                <action selector="addContactTapped:" destination="XYA-Nh-Dtb" id="oPm-lt-lzf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="QSc-Cl-gNx" kind="show" identifier="edit" id="zz4-2l-VcO"/>
+                        <segue destination="vqZ-IR-5T6" kind="show" identifier="goToAddContactTableViewController" id="7n4-Lk-0lJ"/>
+                        <segue destination="QSc-Cl-gNx" kind="show" identifier="edit" id="hFn-aK-ncU"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZXH-yo-4Hm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -235,13 +236,13 @@
                     <navigationItem key="navigationItem" title="New Contact" id="QYi-Od-pPR">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="roJ-5X-FUo">
                             <connections>
-                                <action selector="cancelEnterContact:" destination="vqZ-IR-5T6" id="3Y9-zK-glb"/>
-                                <segue destination="ufr-An-b5y" kind="unwind" unwindAction="goBackWithSegue:" id="LTW-6P-Df2"/>
+                                <segue destination="ufr-An-b5y" kind="unwind" unwindAction="cancelActionWithSegue:" id="HIr-Kd-Ycg"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="znm-Mc-qy6">
                             <connections>
                                 <action selector="saveContact:" destination="vqZ-IR-5T6" id="QTM-6Q-Ctv"/>
+                                <segue destination="ufr-An-b5y" kind="unwind" identifier="savecontact" unwindAction="goBackWithSegue:" id="fgf-iR-bhZ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -254,7 +255,6 @@
                         <outlet property="numberLabel" destination="cvl-FK-Ziq" id="Ahi-1R-gjy"/>
                         <outlet property="numberTF" destination="8oA-cH-7La" id="t5a-nH-4eW"/>
                         <outlet property="saveButton" destination="znm-Mc-qy6" id="VyU-Hl-28A"/>
-                        <segue destination="ufr-An-b5y" kind="unwind" identifier="savecontact" unwindAction="goBackWithSegue:" id="RS3-qA-Hf5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aiy-N9-Lgd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -348,14 +348,12 @@
                     <navigationItem key="navigationItem" id="4oL-OE-9Q9">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="e7G-tk-6re">
                             <connections>
-                                <action selector="goBackTapped:" destination="QSc-Cl-gNx" id="iIs-zF-B5B"/>
-                                <segue destination="QFy-1e-GgN" kind="unwind" identifier="fromEditTomain" unwindAction="goToMainFromEditVCWithSegue:" id="I9p-X5-oMV"/>
+                                <segue destination="eXD-Oc-cRQ" kind="unwind" unwindAction="goToMainFromEditVCWithSegue:" id="SUJ-E1-FcV"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="6p4-ti-psB">
                             <connections>
-                                <action selector="saveEditContact:" destination="QSc-Cl-gNx" id="TMu-A8-69G"/>
-                                <segue destination="QFy-1e-GgN" kind="unwind" identifier="editChanges" unwindAction="goToMainFromEditVCWithSegue:" id="lgI-MU-Jsc"/>
+                                <segue destination="eXD-Oc-cRQ" kind="unwind" identifier="editChanges" unwindAction="goToMainFromEditVCWithSegue:" id="jdY-G3-hyZ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -368,7 +366,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QHo-9Q-dez" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="QFy-1e-GgN" userLabel="Exit" sceneMemberID="exit"/>
+                <exit id="eXD-Oc-cRQ" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="992.75362318840587" y="924.77678571428567"/>
         </scene>
@@ -383,18 +381,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="vqZ-IR-5T6" kind="relationship" relationship="rootViewController" id="Lft-uB-HTj"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N7V-lh-J9x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1711.5942028985507" y="83.705357142857139"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="Lft-uB-HTj"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
