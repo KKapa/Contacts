@@ -31,9 +31,7 @@ class AddContactTableViewController: UITableViewController {
         performSegue(withIdentifier: "savecontact", sender: nil)
     }
     
-    @IBAction func cancelEnterContact(_ sender: Any) {
-        dismiss(animated: true)
-    }
+
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         

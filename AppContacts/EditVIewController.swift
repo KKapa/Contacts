@@ -27,14 +27,6 @@ class EditVIewController: UIViewController {
         registerForKeyboardNotifications()
     }
     
-    @IBAction func goBackTapped(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "fromEditTomain", sender: nil)
-    }
-    
-    @IBAction func saveEditContact(_ sender: Any) {
-        performSegue(withIdentifier: "editChanges", sender: nil)
-    }
-    
     
     func registerForKeyboardNotifications() {
     NotificationCenter.default.addObserver(self,
