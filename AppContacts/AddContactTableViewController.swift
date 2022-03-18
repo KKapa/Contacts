@@ -17,7 +17,6 @@ class AddContactTableViewController: UITableViewController {
     @IBOutlet weak var numberTF: UITextField!
     @IBOutlet weak var notesLabel: UILabel!
     @IBOutlet weak var notesTF: UITextField!
-    
     @IBOutlet weak var saveButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +29,6 @@ class AddContactTableViewController: UITableViewController {
     @IBAction func saveContact(_ sender: Any) {
         performSegue(withIdentifier: "savecontact", sender: nil)
     }
-    
-
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
