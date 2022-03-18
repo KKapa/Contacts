@@ -15,8 +15,8 @@
 		E978074E2795D147005C30C8 /* AppContacts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E978074C2795D147005C30C8 /* AppContacts.xcdatamodeld */; };
 		E97807502795D149005C30C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E978074F2795D149005C30C8 /* Assets.xcassets */; };
 		E97807532795D149005C30C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E97807512795D149005C30C8 /* LaunchScreen.storyboard */; };
-		E978075B2795D188005C30C8 /* mainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E978075A2795D188005C30C8 /* mainTableViewController.swift */; };
-		E978075D2795D69C005C30C8 /* ScondTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E978075C2795D69C005C30C8 /* ScondTableViewController.swift */; };
+		E978075B2795D188005C30C8 /* MyContactListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E978075A2795D188005C30C8 /* MyContactListTableViewController.swift */; };
+		E978075D2795D69C005C30C8 /* AddContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E978075C2795D69C005C30C8 /* AddContactTableViewController.swift */; };
 		E9FFEE342798AFE800E70685 /* UserContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FFEE332798AFE800E70685 /* UserContact.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,8 +31,8 @@
 		E978074F2795D149005C30C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E97807522795D149005C30C8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E97807542795D149005C30C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E978075A2795D188005C30C8 /* mainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainTableViewController.swift; sourceTree = "<group>"; };
-		E978075C2795D69C005C30C8 /* ScondTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScondTableViewController.swift; sourceTree = "<group>"; };
+		E978075A2795D188005C30C8 /* MyContactListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyContactListTableViewController.swift; sourceTree = "<group>"; };
+		E978075C2795D69C005C30C8 /* AddContactTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactTableViewController.swift; sourceTree = "<group>"; };
 		E9FFEE332798AFE800E70685 /* UserContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContact.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,8 +66,8 @@
 		E97807422795D147005C30C8 /* AppContacts */ = {
 			isa = PBXGroup;
 			children = (
-				E978075A2795D188005C30C8 /* mainTableViewController.swift */,
-				E978075C2795D69C005C30C8 /* ScondTableViewController.swift */,
+				E978075A2795D188005C30C8 /* MyContactListTableViewController.swift */,
+				E978075C2795D69C005C30C8 /* AddContactTableViewController.swift */,
 				E9779E1027A6FE6700366BE4 /* EditVIewController.swift */,
 				E92E9019279AB2680038779B /* MainTableViewCell.swift */,
 				E97807432795D147005C30C8 /* AppDelegate.swift */,
@@ -154,8 +154,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9779E1127A6FE6700366BE4 /* EditVIewController.swift in Sources */,
-				E978075D2795D69C005C30C8 /* ScondTableViewController.swift in Sources */,
-				E978075B2795D188005C30C8 /* mainTableViewController.swift in Sources */,
+				E978075D2795D69C005C30C8 /* AddContactTableViewController.swift in Sources */,
+				E978075B2795D188005C30C8 /* MyContactListTableViewController.swift in Sources */,
 				E978074E2795D147005C30C8 /* AppContacts.xcdatamodeld in Sources */,
 				E92E901A279AB2680038779B /* MainTableViewCell.swift in Sources */,
 				E9FFEE342798AFE800E70685 /* UserContact.swift in Sources */,

@@ -108,8 +108,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mdI-Xz-sa2">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill.questionmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="mdI-Xz-sa2">
+                                                    <rect key="frame" x="0.0" y="0.5" width="414" height="298"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -290,6 +290,9 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tgv-Lk-TXV">
                                 <rect key="frame" x="0.0" y="88" width="414" height="433.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="433.5" id="tFW-0t-oUi"/>
+                                </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="48" translatesAutoresizingMaskIntoConstraints="NO" id="7er-W6-qWb">
                                 <rect key="frame" x="0.0" y="541.5" width="414" height="102.5"/>
@@ -329,23 +332,37 @@
                                     </textField>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gjc-Jt-9Ih">
+                                <rect key="frame" x="149" y="490" width="117" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Change image"/>
+                                <connections>
+                                    <action selector="tapForChangeImage:" destination="QSc-Cl-gNx" eventType="touchUpInside" id="g3B-BI-1d7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="MgQ-sU-dRc"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Gjc-Jt-9Ih" firstAttribute="leading" secondItem="MgQ-sU-dRc" secondAttribute="leading" constant="149" id="5Xj-vh-vna"/>
                             <constraint firstItem="tgv-Lk-TXV" firstAttribute="trailing" secondItem="MgQ-sU-dRc" secondAttribute="trailing" id="Hmg-Kf-Mp6"/>
                             <constraint firstItem="7er-W6-qWb" firstAttribute="top" secondItem="tgv-Lk-TXV" secondAttribute="bottom" constant="20" id="Qeo-cg-HVh"/>
                             <constraint firstItem="tgv-Lk-TXV" firstAttribute="leading" secondItem="MgQ-sU-dRc" secondAttribute="leading" id="Sjg-z7-B41"/>
                             <constraint firstItem="tgv-Lk-TXV" firstAttribute="top" secondItem="MgQ-sU-dRc" secondAttribute="top" id="UPQ-Bt-iUC"/>
                             <constraint firstItem="7er-W6-qWb" firstAttribute="leading" secondItem="MgQ-sU-dRc" secondAttribute="leading" id="WBu-bt-bPC"/>
                             <constraint firstItem="MgQ-sU-dRc" firstAttribute="trailing" secondItem="RXU-Nk-lv2" secondAttribute="trailing" id="WFh-vf-QAl"/>
+                            <constraint firstItem="Gjc-Jt-9Ih" firstAttribute="centerX" secondItem="7er-W6-qWb" secondAttribute="centerX" id="Y81-sd-06P"/>
                             <constraint firstItem="RXU-Nk-lv2" firstAttribute="leading" secondItem="MgQ-sU-dRc" secondAttribute="leading" id="YPa-he-Ssn"/>
+                            <constraint firstItem="Gjc-Jt-9Ih" firstAttribute="top" secondItem="MgQ-sU-dRc" secondAttribute="top" constant="402" id="h0E-C3-qCS"/>
                             <constraint firstItem="MgQ-sU-dRc" firstAttribute="bottom" secondItem="RXU-Nk-lv2" secondAttribute="bottom" constant="102.5" id="meH-dC-sWH"/>
+                            <constraint firstItem="RXU-Nk-lv2" firstAttribute="top" secondItem="brU-Pa-Vtm" secondAttribute="top" constant="664" id="oDj-fU-dHk"/>
                             <constraint firstItem="MgQ-sU-dRc" firstAttribute="trailing" secondItem="7er-W6-qWb" secondAttribute="trailing" id="p7A-6P-xtv"/>
                             <constraint firstItem="RXU-Nk-lv2" firstAttribute="top" secondItem="7er-W6-qWb" secondAttribute="bottom" constant="20" id="uFY-wv-sS1"/>
+                            <constraint firstItem="7er-W6-qWb" firstAttribute="top" secondItem="Gjc-Jt-9Ih" secondAttribute="bottom" constant="20.5" id="vfA-lT-Z7v"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="4oL-OE-9Q9">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="e7G-tk-6re">
                             <connections>
                                 <segue destination="eXD-Oc-cRQ" kind="unwind" unwindAction="goToMainFromEditVCWithSegue:" id="SUJ-E1-FcV"/>
@@ -358,6 +375,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="changeImage" destination="Gjc-Jt-9Ih" id="ff0-Hl-6Q1"/>
                         <outlet property="imagePicked" destination="tgv-Lk-TXV" id="l8h-hf-tAD"/>
                         <outlet property="nameLabel" destination="WHL-GU-VHD" id="HSe-UU-WTg"/>
                         <outlet property="nameTF" destination="Q3K-AV-3QL" id="pTw-Hp-UvN"/>
@@ -388,6 +406,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="person.fill.questionmark" catalog="system" width="128" height="104"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

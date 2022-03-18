@@ -24,10 +24,10 @@ class MyContactsListTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-
+        
     }
     
-
+    
     
     func createContact(withTitle name: String, number: String, imagePhoto: Data) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -47,17 +47,17 @@ class MyContactsListTableViewController: UITableViewController {
         }
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//
+        //
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
-//        let sortDescritor = NSSortDescriptor(key: "name", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescritor]
+        //        let sortDescritor = NSSortDescriptor(key: "name", ascending: true)
+        //        fetchRequest.sortDescriptors = [sortDescritor]
         do {
             contacts = try context.fetch(fetchRequest)
         } catch let error as NSError {
@@ -72,21 +72,21 @@ class MyContactsListTableViewController: UITableViewController {
             
             modelContactsList.append(UserContact(name: name!, phoneNumber: number, imagePhoto: image, notes: nil, address: nil))
         }
-
-//                let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//                let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
-//                if let objects = try? context.fetch(fetchRequest) {
-//                    for task in objects {
-//                        context.delete(task)
-//                    }
-//                }
-//
-//                do {
-//                    try context.save()
-//
-//                } catch let error as NSError {
-//                    print(error.localizedDescription)
-//                }
+        
+        //                let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        //                let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
+        //                if let objects = try? context.fetch(fetchRequest) {
+        //                    for task in objects {
+        //                        context.delete(task)
+        //                    }
+        //                }
+        //
+        //                do {
+        //                    try context.save()
+        //
+        //                } catch let error as NSError {
+        //                    print(error.localizedDescription)
+        //                }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -116,7 +116,16 @@ class MyContactsListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             modelContactsList.remove(at: indexPath.row)
+            let context = getContext()
+            context.delete(contacts[indexPath.row])
+            
+            do {
+                try context.save()
+            } catch let error as NSError{
+                print(error.localizedDescription)
+            }
         }
+        self.tableView.reloadData()
     }
     
     
@@ -132,6 +141,7 @@ class MyContactsListTableViewController: UITableViewController {
         if let indexPath = tableView.indexPathForSelectedRow?.row {
             evc.nameTextField = modelContactsList[indexPath].name
             evc.numberTextField = modelContactsList[indexPath].phoneNumber
+            evc.image = modelContactsList[indexPath].imagePhoto
             evc.indexEditingRow = indexPath
         }
     }
@@ -150,6 +160,7 @@ class MyContactsListTableViewController: UITableViewController {
         
         createModelContact(name: name!, number: number!, imagePhoto: miniPhoto!)
         createContact(withTitle: name!, number: number!, imagePhoto: pngPhoto!)
+        self.tableView.reloadData()
     }
     
     @IBAction func goToMainFromEditVC(segue: UIStoryboardSegue) {
@@ -157,12 +168,15 @@ class MyContactsListTableViewController: UITableViewController {
         
         modelContactsList[mvc.indexEditingRow!].name = mvc.nameTF.text!
         modelContactsList[mvc.indexEditingRow!].phoneNumber = mvc.numberTF.text
-        
+        modelContactsList[mvc.indexEditingRow!].imagePhoto = mvc.imagePicked.image
         
         contacts[mvc.indexEditingRow!].name = mvc.nameTF.text
         contacts[mvc.indexEditingRow!].phoneNumber = mvc.numberTF.text
+        let imagePhoto = mvc.imagePicked.image
+        let pngPhoto = imagePhoto?.pngData()
+        contacts[mvc.indexEditingRow!].imagePhoto = pngPhoto
         let context = getContext()
-        
+        self.tableView.reloadData()
         do {
             try context.save()
         } catch let error as NSError {
