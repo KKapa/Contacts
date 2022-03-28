@@ -10,17 +10,18 @@ import CoreData
 
 class MyContactsListTableViewController: UITableViewController {
     
-    var contacts: [Contact] = []
-    var modelContactsList = UserContact.contactsList {
-        didSet {
-            self.tableView.reloadData()
-            print(modelContactsList.count)
-        }
-    }
+    var viewModel: ContactListViewModelType = ContactsListViewModel()
+    
+    
+    
+    let networkManager = NetworkManager()
     
     func createModelContact(name: String, number: String, imagePhoto: UIImage) {
-        modelContactsList.append(UserContact(name: name, phoneNumber: number, imagePhoto: imagePhoto, notes: nil, address: nil))
+      let contact = UserContact(name: name, phoneNumber: number, imagePhoto: imagePhoto, notes: nil, address: nil)
+        viewModel.saveUserContact(contact: contact)
     }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -29,49 +30,16 @@ class MyContactsListTableViewController: UITableViewController {
     
     
     
-    func createContact(withTitle name: String, number: String, imagePhoto: Data) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
-        guard let entity = NSEntityDescription.entity(forEntityName: "Contact", in: context) else { return }
-        let contactObject = Contact(entity: entity, insertInto: context)
-        contactObject.name = name
-        contactObject.phoneNumber = number
-        contactObject.imagePhoto = imagePhoto
-        
-        do {
-            try context.save()
-            contacts.append(contactObject)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //
+        
+        viewModel.viewDidLoad()
+        viewModel.subscribeOnContactsUpdates { [weak self] contacts in
+            self?.tableView.reloadData()
+        }
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
-        //        let sortDescritor = NSSortDescriptor(key: "name", ascending: true)
-        //        fetchRequest.sortDescriptors = [sortDescritor]
-        do {
-            contacts = try context.fetch(fetchRequest)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        
-        for contact in contacts {  //наверное это тоже нужно оборачивать в метод
-            let name = contact.name
-            let number = contact.phoneNumber
-            let dataImage = contact.imagePhoto
-            let image = UIImage(data: dataImage!)
-            
-            modelContactsList.append(UserContact(name: name!, phoneNumber: number, imagePhoto: image, notes: nil, address: nil))
-        }
+        networkManager.fetchAppContacts()
         
         //                let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         //                let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
@@ -89,23 +57,18 @@ class MyContactsListTableViewController: UITableViewController {
         //                }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return viewModel.numberOfSections
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return modelContactsList.count
+        return viewModel.contactsCount
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "formain", for: indexPath) as! MainTableViewCell
         
-        cell.nameLabel.text = modelContactsList[indexPath.row].name
-        cell.phoneLabel.text = modelContactsList[indexPath.row].phoneNumber
-        cell.miniPhoto.image = modelContactsList[indexPath.row].imagePhoto
-        
-        
+        let details = viewModel.userDetails(for: indexPath.row)
+        cell.configure(with: details)
         return cell
     }
     
@@ -115,25 +78,15 @@ class MyContactsListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            modelContactsList.remove(at: indexPath.row)
-            let context = getContext()
-            context.delete(contacts[indexPath.row])
-            
-            do {
-                try context.save()
-            } catch let error as NSError{
-                print(error.localizedDescription)
-            }
+            viewModel.deleteUserContact(at: indexPath.row)
         }
         self.tableView.reloadData()
     }
-    
     
     func getContext() -> NSManagedObjectContext  {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return  appDelegate.persistentContainer.viewContext
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == "edit" else { return }
@@ -156,10 +109,9 @@ class MyContactsListTableViewController: UITableViewController {
         let name = svc.nameTF.text
         let number = svc.numberTF.text
         let miniPhoto = svc.imagePicked.image
-        let pngPhoto = miniPhoto?.pngData()
+       
         
         createModelContact(name: name!, number: number!, imagePhoto: miniPhoto!)
-        createContact(withTitle: name!, number: number!, imagePhoto: pngPhoto!)
         self.tableView.reloadData()
     }
     
@@ -185,12 +137,10 @@ class MyContactsListTableViewController: UITableViewController {
     }
     
     @IBAction func cancelAction(segue: UIStoryboardSegue) {
-        
     }
     
     @IBAction func addContactTapped(_ sender: Any) {
         performSegue(withIdentifier: "goToAddContactTableViewController", sender: nil)
     }
-    
     
 }
