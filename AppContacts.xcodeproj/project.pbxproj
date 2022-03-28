@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E92E901A279AB2680038779B /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92E9019279AB2680038779B /* MainTableViewCell.swift */; };
+		E96FDE0D27E7566F00237AAC /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96FDE0C27E7566F00237AAC /* NetworkManager.swift */; };
 		E9779E1127A6FE6700366BE4 /* EditVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9779E1027A6FE6700366BE4 /* EditVIewController.swift */; };
 		E97807442795D147005C30C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97807432795D147005C30C8 /* AppDelegate.swift */; };
 		E97807462795D147005C30C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97807452795D147005C30C8 /* SceneDelegate.swift */; };
@@ -17,11 +18,15 @@
 		E97807532795D149005C30C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E97807512795D149005C30C8 /* LaunchScreen.storyboard */; };
 		E978075B2795D188005C30C8 /* MyContactListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E978075A2795D188005C30C8 /* MyContactListTableViewController.swift */; };
 		E978075D2795D69C005C30C8 /* AddContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E978075C2795D69C005C30C8 /* AddContactTableViewController.swift */; };
-		E9FFEE342798AFE800E70685 /* UserContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FFEE332798AFE800E70685 /* UserContact.swift */; };
+		E98A3DB727F23A9600BAB7F6 /* ContactsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A3DB627F23A9600BAB7F6 /* ContactsListViewModel.swift */; };
+		E98A3DB927F24B1200BAB7F6 /* ValueChangeNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A3DB827F24B1200BAB7F6 /* ValueChangeNotifier.swift */; };
+		E9B681A227E8A76600F6468B /* UserContactData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B681A127E8A76600F6468B /* UserContactData.swift */; };
+		E9FFEE342798AFE800E70685 /* UserContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FFEE332798AFE800E70685 /* UserContactModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E92E9019279AB2680038779B /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
+		E96FDE0C27E7566F00237AAC /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E9779E1027A6FE6700366BE4 /* EditVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVIewController.swift; sourceTree = "<group>"; };
 		E97807402795D147005C30C8 /* AppContacts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppContacts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E97807432795D147005C30C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -33,7 +38,10 @@
 		E97807542795D149005C30C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E978075A2795D188005C30C8 /* MyContactListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyContactListTableViewController.swift; sourceTree = "<group>"; };
 		E978075C2795D69C005C30C8 /* AddContactTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactTableViewController.swift; sourceTree = "<group>"; };
-		E9FFEE332798AFE800E70685 /* UserContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContact.swift; sourceTree = "<group>"; };
+		E98A3DB627F23A9600BAB7F6 /* ContactsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsListViewModel.swift; sourceTree = "<group>"; };
+		E98A3DB827F24B1200BAB7F6 /* ValueChangeNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueChangeNotifier.swift; sourceTree = "<group>"; };
+		E9B681A127E8A76600F6468B /* UserContactData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContactData.swift; sourceTree = "<group>"; };
+		E9FFEE332798AFE800E70685 /* UserContactModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContactModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,10 +78,14 @@
 				E978075C2795D69C005C30C8 /* AddContactTableViewController.swift */,
 				E9779E1027A6FE6700366BE4 /* EditVIewController.swift */,
 				E92E9019279AB2680038779B /* MainTableViewCell.swift */,
+				E9FFEE332798AFE800E70685 /* UserContactModel.swift */,
+				E9B681A127E8A76600F6468B /* UserContactData.swift */,
+				E96FDE0C27E7566F00237AAC /* NetworkManager.swift */,
+				E98A3DB627F23A9600BAB7F6 /* ContactsListViewModel.swift */,
+				E98A3DB827F24B1200BAB7F6 /* ValueChangeNotifier.swift */,
 				E97807432795D147005C30C8 /* AppDelegate.swift */,
 				E97807452795D147005C30C8 /* SceneDelegate.swift */,
 				E97807492795D147005C30C8 /* Main.storyboard */,
-				E9FFEE332798AFE800E70685 /* UserContact.swift */,
 				E978074F2795D149005C30C8 /* Assets.xcassets */,
 				E97807512795D149005C30C8 /* LaunchScreen.storyboard */,
 				E97807542795D149005C30C8 /* Info.plist */,
@@ -153,14 +165,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E96FDE0D27E7566F00237AAC /* NetworkManager.swift in Sources */,
+				E9B681A227E8A76600F6468B /* UserContactData.swift in Sources */,
 				E9779E1127A6FE6700366BE4 /* EditVIewController.swift in Sources */,
 				E978075D2795D69C005C30C8 /* AddContactTableViewController.swift in Sources */,
 				E978075B2795D188005C30C8 /* MyContactListTableViewController.swift in Sources */,
 				E978074E2795D147005C30C8 /* AppContacts.xcdatamodeld in Sources */,
+				E98A3DB727F23A9600BAB7F6 /* ContactsListViewModel.swift in Sources */,
 				E92E901A279AB2680038779B /* MainTableViewCell.swift in Sources */,
-				E9FFEE342798AFE800E70685 /* UserContact.swift in Sources */,
+				E9FFEE342798AFE800E70685 /* UserContactModel.swift in Sources */,
 				E97807442795D147005C30C8 /* AppDelegate.swift in Sources */,
 				E97807462795D147005C30C8 /* SceneDelegate.swift in Sources */,
+				E98A3DB927F24B1200BAB7F6 /* ValueChangeNotifier.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
