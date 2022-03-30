@@ -21,19 +21,51 @@ protocol ContactListViewModelType {
     
     func subscribeOnContactsUpdates(with block: @escaping ([UserContact]) -> Void)
     
+    func returnCurrentContact(index: Int) -> UserContact
+    
+    func updateVMContact(index: Int, name: String, imagePhoto: UIImage, phoneNumber: String)
+    
+    func updateContactDataBase(index: Int, name: String, imagePhoto: Data?, phoneNumber: String?)
+    
     func viewDidLoad()
     
 }
 
 class ContactsListViewModel: ContactListViewModelType {
+    
+    func updateVMContact(index: Int, name: String, imagePhoto: UIImage, phoneNumber: String) {
+        modelContactsNotifier.value[index].imagePhoto = imagePhoto
+        modelContactsNotifier.value[index].name = name
+        modelContactsNotifier.value[index].phoneNumber = phoneNumber
+    }
+    
+    func updateContactDataBase(index: Int, name: String, imagePhoto: Data?, phoneNumber: String?) {
+        contacts[index].name = name
+        contacts[index].phoneNumber = phoneNumber
+        contacts[index].imagePhoto = imagePhoto
+        let context = getContext()
+                do {
+                    try context.save()
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+       
+    }
+    
+    func returnCurrentContact(index: Int) -> UserContact {
+        
+      let currentContact = modelContactsNotifier.value[index]
+        return currentContact
+    }
+    
     func saveUserContact(contact: UserContact) {
+        
         modelContactsNotifier.value.append(contact)
         saveToDataBase(contact: contact)
     }
     
-    
     private var contacts: [Contact] = []
-    
+
     func subscribeOnContactsUpdates(with block: @escaping ([UserContact]) -> Void) {
         modelContactsNotifier.bindObserver(with: block)
     }
@@ -118,5 +150,6 @@ class ContactsListViewModel: ContactListViewModelType {
         } catch let error as NSError {
             print(error.localizedDescription)
         }
+      
     }
 }
