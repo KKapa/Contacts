@@ -92,9 +92,11 @@ class MyContactsListTableViewController: UITableViewController {
         guard segue.identifier == "edit" else { return }
         guard let evc = segue.destination as? EditVIewController  else { return }
         if let indexPath = tableView.indexPathForSelectedRow?.row {
-            evc.nameTextField = modelContactsList[indexPath].name
-            evc.numberTextField = modelContactsList[indexPath].phoneNumber
-            evc.image = modelContactsList[indexPath].imagePhoto
+            
+            let selectedContact = viewModel.returnCurrentContact(index: indexPath)
+            evc.nameTextField = selectedContact.name
+            evc.numberTextField = selectedContact.name
+            evc.image = selectedContact.imagePhoto
             evc.indexEditingRow = indexPath
         }
     }
@@ -118,22 +120,30 @@ class MyContactsListTableViewController: UITableViewController {
     @IBAction func goToMainFromEditVC(segue: UIStoryboardSegue) {
         guard segue.identifier == "editChanges", let mvc = segue.source as? EditVIewController else { return }
         
-        modelContactsList[mvc.indexEditingRow!].name = mvc.nameTF.text!
-        modelContactsList[mvc.indexEditingRow!].phoneNumber = mvc.numberTF.text
-        modelContactsList[mvc.indexEditingRow!].imagePhoto = mvc.imagePicked.image
+        let editContact = viewModel.returnCurrentContact(index: mvc.indexEditingRow!)
         
-        contacts[mvc.indexEditingRow!].name = mvc.nameTF.text
-        contacts[mvc.indexEditingRow!].phoneNumber = mvc.numberTF.text
-        let imagePhoto = mvc.imagePicked.image
-        let pngPhoto = imagePhoto?.pngData()
-        contacts[mvc.indexEditingRow!].imagePhoto = pngPhoto
-        let context = getContext()
+        viewModel.updateVMContact(index: mvc.indexEditingRow!, name: mvc.nameTF.text!, imagePhoto: mvc.imagePicked.image!, phoneNumber: mvc.numberTF.text!)
+        
+        viewModel.updateContactDataBase(index: mvc.indexEditingRow!, name: mvc.nameTF.text!, imagePhoto: mvc.imagePicked.image?.pngData(), phoneNumber: mvc.numberTF.text!)
         self.tableView.reloadData()
-        do {
-            try context.save()
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
+        
+        
+//        editContact.name = mvc.nameTF.text!
+//        editContact.phoneNumber = mvc.numberTF.text
+//        editContact.imagePhoto = mvc.imagePicked.image
+        
+//        contacts[mvc.indexEditingRow!].name = mvc.nameTF.text
+//        contacts[mvc.indexEditingRow!].phoneNumber = mvc.numberTF.text
+//        let imagePhoto = mvc.imagePicked.image
+//        let pngPhoto = imagePhoto?.pngData()
+//        contacts[mvc.indexEditingRow!].imagePhoto = pngPhoto
+//        let context = getContext()
+//        self.tableView.reloadData()
+//        do {
+//            try context.save()
+//        } catch let error as NSError {
+//            print(error.localizedDescription)
+//        }
     }
     
     @IBAction func cancelAction(segue: UIStoryboardSegue) {
