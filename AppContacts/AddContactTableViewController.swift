@@ -31,7 +31,6 @@ class AddContactTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         if indexPath.row == 0 {
             
             let alertController = UIAlertController(title: nil,
@@ -60,9 +59,8 @@ class AddContactTableViewController: UITableViewController {
 }
 
 extension AddContactTableViewController: UIImagePickerControllerDelegate,  UINavigationControllerDelegate {
-    
+
     func chooseImagePicker(source: UIImagePickerController.SourceType) {
-        
         if UIImagePickerController.isSourceTypeAvailable(source) {
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self
@@ -78,7 +76,6 @@ extension AddContactTableViewController: UIImagePickerControllerDelegate,  UINav
         imagePicked.contentMode = .scaleAspectFit
         imagePicked.clipsToBounds = true
         dismiss(animated: true)
-        
     }
 }
 

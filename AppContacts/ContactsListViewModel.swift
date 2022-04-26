@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 
 protocol ContactListViewModelType {
-    
     var contactsCount: Int { get }
     var numberOfSections: Int { get }
     
@@ -32,7 +31,6 @@ protocol ContactListViewModelType {
 }
 
 class ContactsListViewModel: ContactListViewModelType {
-    
     func updateVMContact(index: Int, name: String, imagePhoto: UIImage, phoneNumber: String) {
         modelContactsNotifier.value[index].imagePhoto = imagePhoto
         modelContactsNotifier.value[index].name = name
@@ -49,17 +47,14 @@ class ContactsListViewModel: ContactListViewModelType {
                 } catch let error as NSError {
                     print(error.localizedDescription)
                 }
-       
     }
     
     func returnCurrentContact(index: Int) -> UserContact {
-        
       let currentContact = modelContactsNotifier.value[index]
         return currentContact
     }
     
     func saveUserContact(contact: UserContact) {
-        
         modelContactsNotifier.value.append(contact)
         saveToDataBase(contact: contact)
     }
@@ -94,7 +89,6 @@ class ContactsListViewModel: ContactListViewModelType {
     }
     
     func deleteUserContact(at index: Int) {
-        
         modelContactsNotifier.value.remove(at: index)
         let context = getContext()
         context.delete(contacts[index])
@@ -104,6 +98,7 @@ class ContactsListViewModel: ContactListViewModelType {
         } catch let error as NSError{
             print(error.localizedDescription)
         }
+        dataBaseUpdateAfterDeleteAction()
     }
     
     private func fetchContactsFromDatabase() {
@@ -129,15 +124,24 @@ class ContactsListViewModel: ContactListViewModelType {
         modelContactsNotifier.value.append(contentsOf: userContacts)
     }
     
+    private func dataBaseUpdateAfterDeleteAction() {
+      let context = getContext()
+        let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
+        
+        do {
+             contacts = try context.fetch(fetchRequest)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    
     private func getContext() -> NSManagedObjectContext  {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return  appDelegate.persistentContainer.viewContext
     }
     
     private func saveToDataBase(contact: UserContact) {
-        
         let context = getContext()
-        
         guard let entity = NSEntityDescription.entity(forEntityName: "Contact", in: context) else { return }
         let contactObject = Contact(entity: entity, insertInto: context)
         contactObject.name = contact.name
@@ -150,6 +154,5 @@ class ContactsListViewModel: ContactListViewModelType {
         } catch let error as NSError {
             print(error.localizedDescription)
         }
-      
     }
 }

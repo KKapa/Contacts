@@ -26,5 +26,4 @@ final class ValueChangeNotifier<V> {
         self.observerBlock = block
         block(value)
     }
-    
 }

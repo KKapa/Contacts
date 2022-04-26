@@ -9,52 +9,54 @@ import UIKit
 import CoreData
 
 class MyContactsListTableViewController: UITableViewController {
-    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     var viewModel: ContactListViewModelType = ContactsListViewModel()
-    
-    
-    
     let networkManager = NetworkManager()
     
     func createModelContact(name: String, number: String, imagePhoto: UIImage) {
-      let contact = UserContact(name: name, phoneNumber: number, imagePhoto: imagePhoto, notes: nil, address: nil)
+        let contact = UserContact(name: name, phoneNumber: number, imagePhoto: imagePhoto, notes: nil, address: nil)
         viewModel.saveUserContact(contact: contact)
     }
     
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
-    }
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        activityIndicator.startAnimating()
         viewModel.viewDidLoad()
-        viewModel.subscribeOnContactsUpdates { [weak self] contacts in
-            self?.tableView.reloadData()
+        
+        networkManager.fetchAppContacts { contacts in
+            for contact in contacts {
+                DispatchQueue.main.async {
+                    self.activityIndicator.isHidden = true
+                    self.activityIndicator.stopAnimating()
+                }
+
+                let name = contact.name
+                let phone = contact.phoneNumber
+                let image = contact.imagePhoto
+                self.createModelContact(name: name, number: phone!, imagePhoto: image!)
+            }
+        }
+        viewModel.subscribeOnContactsUpdates{ [weak self] contacts in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
         }
         self.navigationItem.leftBarButtonItem = self.editButtonItem
-        
-        networkManager.fetchAppContacts()
-        
-        //                let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        //                let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
-        //                if let objects = try? context.fetch(fetchRequest) {
-        //                    for task in objects {
-        //                        context.delete(task)
-        //                    }
-        //                }
-        //
-        //                do {
-        //                    try context.save()
-        //
-        //                } catch let error as NSError {
-        //                    print(error.localizedDescription)
-        //                }
+    
+//                                let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//                                let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
+//                                if let objects = try? context.fetch(fetchRequest) {
+//                                    for task in objects {
+//                                        context.delete(task)
+//                                    }
+//                                }
+//
+//                                do {
+//                                    try context.save()
+//
+//                                } catch let error as NSError {
+//                                    print(error.localizedDescription)
+//                                }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.numberOfSections
@@ -92,7 +94,6 @@ class MyContactsListTableViewController: UITableViewController {
         guard segue.identifier == "edit" else { return }
         guard let evc = segue.destination as? EditVIewController  else { return }
         if let indexPath = tableView.indexPathForSelectedRow?.row {
-            
             let selectedContact = viewModel.returnCurrentContact(index: indexPath)
             evc.nameTextField = selectedContact.name
             evc.numberTextField = selectedContact.name
@@ -103,7 +104,6 @@ class MyContactsListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "edit", sender: nil)
-        
     }
     
     @IBAction func goBack(segue: UIStoryboardSegue) {
@@ -111,7 +111,6 @@ class MyContactsListTableViewController: UITableViewController {
         let name = svc.nameTF.text
         let number = svc.numberTF.text
         let miniPhoto = svc.imagePicked.image
-       
         
         createModelContact(name: name!, number: number!, imagePhoto: miniPhoto!)
         self.tableView.reloadData()
@@ -119,31 +118,27 @@ class MyContactsListTableViewController: UITableViewController {
     
     @IBAction func goToMainFromEditVC(segue: UIStoryboardSegue) {
         guard segue.identifier == "editChanges", let mvc = segue.source as? EditVIewController else { return }
-        
         let editContact = viewModel.returnCurrentContact(index: mvc.indexEditingRow!)
-        
         viewModel.updateVMContact(index: mvc.indexEditingRow!, name: mvc.nameTF.text!, imagePhoto: mvc.imagePicked.image!, phoneNumber: mvc.numberTF.text!)
-        
         viewModel.updateContactDataBase(index: mvc.indexEditingRow!, name: mvc.nameTF.text!, imagePhoto: mvc.imagePicked.image?.pngData(), phoneNumber: mvc.numberTF.text!)
         self.tableView.reloadData()
         
+        //        editContact.name = mvc.nameTF.text!
+        //        editContact.phoneNumber = mvc.numberTF.text
+        //        editContact.imagePhoto = mvc.imagePicked.image
         
-//        editContact.name = mvc.nameTF.text!
-//        editContact.phoneNumber = mvc.numberTF.text
-//        editContact.imagePhoto = mvc.imagePicked.image
-        
-//        contacts[mvc.indexEditingRow!].name = mvc.nameTF.text
-//        contacts[mvc.indexEditingRow!].phoneNumber = mvc.numberTF.text
-//        let imagePhoto = mvc.imagePicked.image
-//        let pngPhoto = imagePhoto?.pngData()
-//        contacts[mvc.indexEditingRow!].imagePhoto = pngPhoto
-//        let context = getContext()
-//        self.tableView.reloadData()
-//        do {
-//            try context.save()
-//        } catch let error as NSError {
-//            print(error.localizedDescription)
-//        }
+        //        contacts[mvc.indexEditingRow!].name = mvc.nameTF.text
+        //        contacts[mvc.indexEditingRow!].phoneNumber = mvc.numberTF.text
+        //        let imagePhoto = mvc.imagePicked.image
+        //        let pngPhoto = imagePhoto?.pngData()
+        //        contacts[mvc.indexEditingRow!].imagePhoto = pngPhoto
+        //        let context = getContext()
+        //        self.tableView.reloadData()
+        //        do {
+        //            try context.save()
+        //        } catch let error as NSError {
+        //            print(error.localizedDescription)
+        //        }
     }
     
     @IBAction func cancelAction(segue: UIStoryboardSegue) {
@@ -152,5 +147,4 @@ class MyContactsListTableViewController: UITableViewController {
     @IBAction func addContactTapped(_ sender: Any) {
         performSegue(withIdentifier: "goToAddContactTableViewController", sender: nil)
     }
-    
 }
