@@ -14,8 +14,6 @@ struct UserContact {
     var imagePhoto: UIImage?
     var notes: String?
     var address: CLLocationCoordinate2D?
-
-    static var contactsList: [UserContact] = []
 }
 
 

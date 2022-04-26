@@ -6,29 +6,40 @@
 //
 
 import Foundation
+import UIKit
 
 class NetworkManager {
-    
-    func fetchAppContacts() {
+    func fetchAppContacts(completionHandler: @escaping ([UserContact]) -> Void) {
         let urlString = "https://raw.githubusercontent.com/KKapa/KKapa-JSON-Contacts/main/JSON.json"
-        guard let url = URL(string: urlString) else { return }
-        let session = URLSession(configuration: .default)
-        let task = session.dataTask(with: url) { data, response, error in
-            guard let data = data, let response = response else { return }
-            let parsedDataContacts =  self.parseJSON(data: data)
-            
-        }.resume()
+        let queue = DispatchQueue.global(qos: .background)
         
+        queue.async {
+            guard let url = URL(string: urlString) else { return }
+            let session = URLSession(configuration: .default)
+            let task = session.dataTask(with: url) { data, response, error in
+                guard let data = data, let response = response else { return }
+                if let parsedDataContacts =  self.parseJSON(data: data) {
+                    completionHandler(parsedDataContacts)
+                }
+            }.resume()
+        }
     }
     
-    func parseJSON(data: Data) {
+    func parseJSON(data: Data) -> [UserContact]? {
         let decoder = JSONDecoder()
         
         do {
-            guard let contactsFromNetworkData = try? decoder.decode([UserConactData].self, from: data) else { return }
-            contactsFromNetworkData.forEach{print($0)}
+            let contactsFromNetworkData = try decoder.decode([UserConactData].self, from: data)
+            var contacts: [UserContact] = []
+            for contact in contactsFromNetworkData {
+                let name = contact.name
+                let phone = contact.phoneNumber
+                contacts.append(UserContact(name: name, phoneNumber: phone, imagePhoto: UIImage(imageLiteralResourceName: "defaultimage"), notes: nil, address: nil))
+            }
+            return contacts
         } catch let error as NSError {
             print(error.localizedDescription)
         }
+        return nil
     }
 }
