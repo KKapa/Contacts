@@ -118,8 +118,12 @@ class DataBaseContactsViewModel: ContactListViewModelType {
         manager.fetchAppContacts { [weak self] contacts in
             DispatchQueue.main.async {
                 self?.activityNotifier.value = false
+                for contact in contacts {
+                    self?.saveToDataBase(contact: contact)
+                }
             }
             self?.modelContactsNotifier.value.append(contentsOf: contacts)
+           
         }
     }
 

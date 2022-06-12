@@ -114,23 +114,6 @@ class MyContactsListTableViewController: UITableViewController {
         )
 
         viewModel.updateContact(index: mvc.indexEditingRow!, contact: updatedContact)
-        
-        //        editContact.name = mvc.nameTF.text!
-        //        editContact.phoneNumber = mvc.numberTF.text
-        //        editContact.imagePhoto = mvc.imagePicked.image
-        
-        //        contacts[mvc.indexEditingRow!].name = mvc.nameTF.text
-        //        contacts[mvc.indexEditingRow!].phoneNumber = mvc.numberTF.text
-        //        let imagePhoto = mvc.imagePicked.image
-        //        let pngPhoto = imagePhoto?.pngData()
-        //        contacts[mvc.indexEditingRow!].imagePhoto = pngPhoto
-        //        let context = getContext()
-        //        self.tableView.reloadData()
-        //        do {
-        //            try context.save()
-        //        } catch let error as NSError {
-        //            print(error.localizedDescription)
-        //        }
     }
 
     private func createModelContact(name: String, number: String, imagePhoto: UIImage?) {
